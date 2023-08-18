@@ -179,6 +179,7 @@
     <ClInclude Include="..\..\backends\imgui_impl_sdl2.h" />
     <ClInclude Include="..\..\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="..\..\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="boot_rom.hpp" />
     <ClInclude Include="GameBoy.hpp" />
     <ClInclude Include="GB_Base.hpp" />
     <ClInclude Include="GB_CPU.hpp" />

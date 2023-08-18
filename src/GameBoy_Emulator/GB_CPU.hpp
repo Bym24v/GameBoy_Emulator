@@ -10,6 +10,8 @@ struct GB_CPU
 	GB_CPU();
 	~GB_CPU();
 
+	
+
 private:
 	GB_MMU* gb_mmu;
 

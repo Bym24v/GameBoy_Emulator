@@ -21,10 +21,16 @@
 #endif
 
 // Main code
-int main(int, char**)
+int main(int args, char* argv[])
 {
+    if (args < 3)
+    {
+        std::cout << "Usage: GameBoy_Emulator.exe bootableRom cartridge.bin\n";
+        return 1;
+    }
+
     GameBoy gb;
-    gb.StartEmulation();
+    gb.PowerUp(argv[1], argv[2]);
 
     // Setup SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
@@ -160,8 +166,8 @@ int main(int, char**)
         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);
+        //if (show_demo_window)
+        //    ImGui::ShowDemoWindow(&show_demo_window);
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         //{
@@ -216,7 +222,6 @@ int main(int, char**)
                 {
                     std::cout << "[!] Exit Program\n";
                     done = true;
-                    
                 }
 
                 ImGui::EndMenu();
@@ -260,15 +265,6 @@ int main(int, char**)
             if (ImGui::BeginMenu("About"))
             {
                 ImGui::Text("Developer @Bym24v");
-                //if (ImGui::MenuItem("Developer", "Bym24v")) {}
-                //if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-                
-                //ImGui::Separator();
-
-                //if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-                //if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-                //if (ImGui::MenuItem("Paste", "CTRL+V")) {}
-
                 ImGui::EndMenu();
             }
 
@@ -303,7 +299,7 @@ int main(int, char**)
             ImGui::Separator();
             ImGui::Separator();
 
-            ImGui::Text("State: Running");
+            ImGui::Text("State: stop");
 
             ImGui::End();
         }

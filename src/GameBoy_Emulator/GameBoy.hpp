@@ -10,10 +10,7 @@ struct GameBoy
 	GameBoy();
 	~GameBoy();
 
-	void StartEmulation();
-
-	void LoadBoot();
-	void LoadCartridge();
+	void PowerUp(const String,  const String);
 
 private:
 

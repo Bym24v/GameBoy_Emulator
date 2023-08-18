@@ -9,6 +9,8 @@ struct GB_MMU
 	GB_MMU();
 	~GB_MMU();
 
+	bool LoadRoms(const String, const String);
+
 private:
 
 	// Memory
@@ -18,6 +20,11 @@ private:
 	// BOOT 
 	u8 BootableROM[r256]{0};
 	u8* ROM{nullptr};
+
+
+	bool LoadBootableRoom(const String);
+	bool LoadCartridge(const String);
+
 };
 
 #endif // __MMU_H__

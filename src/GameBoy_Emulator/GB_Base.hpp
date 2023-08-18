@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+
 // Defines
 constexpr auto r8Kb = (1024 * 8);
 constexpr auto r256 = (256);

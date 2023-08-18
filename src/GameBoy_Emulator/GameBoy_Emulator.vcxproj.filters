@@ -73,6 +73,9 @@
     <ClInclude Include="GB_Base.hpp">
       <Filter>GameBoy\includes</Filter>
     </ClInclude>
+    <ClInclude Include="boot_rom.hpp">
+      <Filter>GameBoy\includes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.txt" />

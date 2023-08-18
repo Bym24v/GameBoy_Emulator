@@ -11,7 +11,7 @@ GameBoy::~GameBoy()
 }
 
 
-void GameBoy::StartEmulation()
+void GameBoy::PowerUp(const String bootable_room, const String cartridge)
 {
 	std::cout << "+ -------------------------------------- +\n";
 	std::cout << "|    ..:: Emulator GameBoy v1 ::..       |\n";
@@ -19,14 +19,10 @@ void GameBoy::StartEmulation()
 	std::cout << "+ -------------------------------------- +\n";
 
 	/// TODO Next secuence
+	if (gb_mmu.LoadRoms(bootable_room, cartridge))
+	{
+		std::cout << "Load Finnish!\n";
+	}
 }
 
-void GameBoy::LoadBoot()
-{
-	
-}
 
-void GameBoy::LoadCartridge()
-{
-
-}
