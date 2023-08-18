@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# Ignore Folders
+backends
+misc
+misc/cpp
+misc/debugger
+misc/fonts
+src/libs
+.vs
+src/GameBoy_Emulator/Debug
