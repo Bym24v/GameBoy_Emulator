@@ -167,6 +167,9 @@
     <ClCompile Include="..\..\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="..\..\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="GameBoy.cpp" />
+    <ClCompile Include="GB_CPU.cpp" />
+    <ClCompile Include="GB_Debugger.cpp" />
+    <ClCompile Include="GB_MMU.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,9 +180,11 @@
     <ClInclude Include="..\..\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="..\..\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="GameBoy.hpp" />
-    <ClInclude Include="GM_CPU.hpp" />
-    <ClInclude Include="GM_Debugger.hpp" />
-    <ClInclude Include="GM_MMU.hpp" />
+    <ClInclude Include="GB_Base.hpp" />
+    <ClInclude Include="GB_CPU.hpp" />
+    <ClInclude Include="GB_Debugger.hpp" />
+    <ClInclude Include="GB_MemoryView.hpp" />
+    <ClInclude Include="GB_MMU.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\misc\debuggers\imgui.natstepfilter" />

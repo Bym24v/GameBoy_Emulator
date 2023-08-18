@@ -23,7 +23,18 @@
     <ClCompile Include="..\..\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="GameBoy.cpp" />
+    <ClCompile Include="GB_CPU.cpp">
+      <Filter>GameBoy</Filter>
+    </ClCompile>
+    <ClCompile Include="GB_MMU.cpp">
+      <Filter>GameBoy</Filter>
+    </ClCompile>
+    <ClCompile Include="GB_Debugger.cpp">
+      <Filter>GameBoy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBoy.cpp">
+      <Filter>GameBoy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\imconfig.h">
@@ -44,17 +55,23 @@
     <ClInclude Include="..\..\imgui_internal.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="GM_MMU.hpp">
-      <Filter>GameBoy</Filter>
-    </ClInclude>
-    <ClInclude Include="GM_CPU.hpp">
-      <Filter>GameBoy</Filter>
-    </ClInclude>
-    <ClInclude Include="GM_Debugger.hpp">
-      <Filter>GameBoy</Filter>
-    </ClInclude>
     <ClInclude Include="GameBoy.hpp">
-      <Filter>GameBoy</Filter>
+      <Filter>GameBoy\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="GB_MMU.hpp">
+      <Filter>GameBoy\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="GB_Debugger.hpp">
+      <Filter>GameBoy\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="GB_CPU.hpp">
+      <Filter>GameBoy\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="GB_MemoryView.hpp">
+      <Filter>GameBoy\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="GB_Base.hpp">
+      <Filter>GameBoy\includes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +89,9 @@
     </Filter>
     <Filter Include="GameBoy">
       <UniqueIdentifier>{4061aa2c-7573-4244-adc2-92d96dd69961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBoy\includes">
+      <UniqueIdentifier>{37c14448-0892-4b0b-b2c9-f7b1ebb6211c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

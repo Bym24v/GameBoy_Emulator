@@ -10,6 +10,10 @@
 #include <SDL.h>
 
 
+#include "GameBoy.hpp"
+#include "GB_MemoryView.hpp"
+
+
 #if defined(IMGUI_IMPL_OPENGL_ES2)
 #include <SDL_opengles2.h>
 #else
@@ -19,6 +23,9 @@
 // Main code
 int main(int, char**)
 {
+    GameBoy gb;
+    gb.StartEmulation();
+
     // Setup SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
@@ -59,7 +66,7 @@ int main(int, char**)
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-    SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+    SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED | SDL_WINDOW_ALLOW_HIGHDPI);
     SDL_Window* window = SDL_CreateWindow("GameBoy_Emulator v1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
@@ -117,6 +124,16 @@ int main(int, char**)
     // Main loop
     bool done = false;
 
+    bool isViewDebugger     = true;
+    bool isDebuggerCLI      = true;
+    bool isViewRegisters    = true;
+    bool isViewMemory       = true;
+    bool isViewResources    = true;
+    bool isViewGame         = true;
+    bool isViewLog          = true;
+
+    MemoryEditor mem_view;
+
     while (!done)
     {
         // Poll and handle events (inputs, window resize, etc.)
@@ -143,8 +160,8 @@ int main(int, char**)
         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        //if (show_demo_window)
-        //    ImGui::ShowDemoWindow(&show_demo_window);
+        if (show_demo_window)
+            ImGui::ShowDemoWindow(&show_demo_window);
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         //{
@@ -170,20 +187,186 @@ int main(int, char**)
         //}
 
         // 3. Show another simple window.
-        if (show_another_window)
+        //if (show_another_window)
+        //{
+        //    ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+        //    ImGui::Text("Hello from another window!");
+        //    
+        //    if (ImGui::Button("Close Me")) 
+        //    {
+        //        show_another_window = false;
+        //        
+        //    }
+        //    
+        //    ImGui::End();
+        //}
+
+        if (ImGui::BeginMainMenuBar())
         {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
-                show_another_window = false;
-            ImGui::End();
+            if (ImGui::BeginMenu("Menu"))
+            {
+                if (ImGui::MenuItem("Load Cartridge", "CTRL+L")) 
+                {
+                    std::cout << "[+] Load Cartridge\n";
+                }
+                
+                ImGui::Separator();
+
+                if (ImGui::MenuItem("Exit", "CTRL+q")) 
+                {
+                    std::cout << "[!] Exit Program\n";
+                    done = true;
+                    
+                }
+
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Views"))
+            {
+                if (ImGui::MenuItem("Debugger", "CTRL+d", isViewDebugger, &isViewDebugger))
+                {
+                    isViewDebugger = !isViewDebugger;
+                }
+                
+                if (ImGui::MenuItem("Registers", "CTRL+r", isViewRegisters, &isViewRegisters)) 
+                {
+                    isViewRegisters = !isViewRegisters;
+                }
+                
+                if (ImGui::MenuItem("Memory", "CTRL+m", isViewMemory, &isViewMemory)) 
+                {
+                    isViewMemory = !isViewMemory;
+                }
+                
+                if (ImGui::MenuItem("Resources", "CTRL+R", isViewResources, &isViewResources)) 
+                {
+                    isViewResources = !isViewResources;
+                }
+                
+                if (ImGui::MenuItem("Game", "CTRL+g", isViewGame, &isViewGame)) 
+                {
+                    isViewGame = !isViewGame;
+                }
+
+                if (ImGui::MenuItem("Log", "CTRL+L", isViewLog, &isViewLog))
+                {
+                    isViewLog = !isViewLog;
+                }
+
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("About"))
+            {
+                ImGui::Text("Developer @Bym24v");
+                //if (ImGui::MenuItem("Developer", "Bym24v")) {}
+                //if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+                
+                //ImGui::Separator();
+
+                //if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+                //if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+                //if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+
+                ImGui::EndMenu();
+            }
+
+            ImGui::EndMainMenuBar();
         }
 
 
+        if (isViewDebugger)
+        {
+            ImGui::Begin("Debugger", &isViewDebugger);
+            
+            ImGui::End();
+        }
+        
+        if (isDebuggerCLI)
+        {
+            ImGui::Begin("Debugger CLI", &isDebuggerCLI);
 
+            ImGui::Separator();
+            
+            // Button
+            ImGui::Button("step into"); ImGui::SameLine();
+            ImGui::Button("step over"); ImGui::SameLine();
+            
+            ImGui::Separator();
+            ImGui::Separator();
 
+            ImGui::Button("play");  ImGui::SameLine();
+            ImGui::Button("pause"); ImGui::SameLine();
+            ImGui::Button("stop");
 
+            ImGui::Separator();
+            ImGui::Separator();
 
+            ImGui::Text("State: Running");
+
+            ImGui::End();
+        }
+
+        if (isViewRegisters)
+        {
+            ImGui::Begin("Registers", &isViewRegisters);
+
+            ImGui::Text("A: 00");
+            ImGui::Text("B: 00");
+            ImGui::Text("C: 00");
+            ImGui::Text("D: 00");
+            ImGui::Text("E: 00");
+            ImGui::Text("H: 00");
+            ImGui::Text("L: 00");
+            ImGui::Text("SP: 00");
+            ImGui::Text("PC: 00");
+
+            ImGui::Separator();
+
+            ImGui::Text("Flags");
+            ImGui::Text("Z: 0"); ImGui::SameLine();
+            ImGui::Text("N: 0"); ImGui::SameLine();
+            ImGui::Text("H: 0"); ImGui::SameLine();
+            ImGui::Text("C: 0");
+
+            ImGui::End();
+        }
+
+        if (isViewResources)
+        {
+            ImGui::Begin("Resources", &isViewResources);
+
+            ImGui::Text("Resources");
+
+            ImGui::End();
+        }
+
+        if (isViewGame)
+        {
+            ImGui::Begin("Game", &isViewGame);
+
+            ImGui::Text("Game");
+
+            ImGui::End();
+        }
+
+        if (isViewMemory)
+        {
+            uint8_t arr[]{ 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41 };
+            mem_view.DrawWindow("Memory", arr, sizeof(arr));
+        }
+
+        if (isViewLog)
+        {
+            ImGui::Begin("Logger", &isViewLog);
+
+            ImGui::Text("Log");
+
+            ImGui::End();
+        }
+        
+        
 
 
         // Rendering
